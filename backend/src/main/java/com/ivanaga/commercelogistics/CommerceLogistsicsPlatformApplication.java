@@ -1,4 +1,4 @@
-package com.ivanaga.commerce_logistsics_platform;
+package com.ivanaga.commercelogistics;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
