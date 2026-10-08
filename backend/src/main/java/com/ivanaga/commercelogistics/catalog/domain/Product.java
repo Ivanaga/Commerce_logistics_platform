@@ -3,6 +3,9 @@ package com.ivanaga.commercelogistics.catalog.domain;
 import java.math.BigDecimal;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity 
 @Table(name = "products")
@@ -12,18 +15,23 @@ public class Product
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String sku;
 
+    @NotBlank
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = true)
     private String description;
 
+    @NotNull 
+    @PositiveOrZero 
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal price;
 
+    @NotNull 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductStatus status;
