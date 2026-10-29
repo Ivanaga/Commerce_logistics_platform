@@ -3,6 +3,7 @@ package com.ivanaga.commercelogistics.catalog.api;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +48,14 @@ public class ProductController
         List<Product> products = productService.getAllProducts();
          return products.stream().map(product -> 
             new ProductResponse(product.getId(), product.getSku(), product.getName(), product.getDescription(), product.getPrice(), product.getStatus())).toList();
+    }
+
+    @PatchMapping("/{id}")
+    public ProductResponse updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductRequest request)
+    {
+        Product product = productService.updateProduct(id, request.name(), request.description(), request.price());
+        ProductResponse response = new ProductResponse(product.getId(), product.getSku(), product.getName(), product.getDescription(), product.getPrice(), product.getStatus());
+        return response;
     }
     
 }

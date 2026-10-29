@@ -88,5 +88,31 @@ public class ProductServiceTest
         assertEquals(products, List.of());
         verify(productRepository).findAll();
     }
+
+    @Test 
+    void updateProductSuccess()
+    {
+
+        Product existingProduct = new Product("Iphone 11-256", "Iphone 11 Black 256 GB", "Loh", new BigDecimal("200.00"));
+        when(productRepository.findById(1L)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(Mockito.any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Product updatedProduct = productService.updateProduct(1L, "Iphone 12-256", "Lohovskoy telefon", new BigDecimal("150.00"));
+        assertEquals(updatedProduct.getName(), "Iphone 12-256");
+        assertEquals(updatedProduct.getPrice(), new BigDecimal("150.00"));
+        assertEquals(updatedProduct.getDescription(), "Lohovskoy telefon");
+
+        verify(productRepository).findById(1L);
+        verify(productRepository).save(existingProduct);
+    }
+
+    @Test 
+    void updateProductNotFound()
+    {
+        when(productRepository.findById(999L)).thenReturn(Optional.empty());  
+        assertThrows(ProductNotFoundException.class, () -> productService.updateProduct(999L, "s", "l", new BigDecimal("22")));
+        verify(productRepository).findById(999L);
+        verify(productRepository, never()).save(Mockito.any(Product.class));
+    }
     
 }

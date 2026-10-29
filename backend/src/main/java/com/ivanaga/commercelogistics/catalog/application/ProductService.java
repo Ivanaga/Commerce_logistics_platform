@@ -46,5 +46,14 @@ public class ProductService
         return productRepository.findAll();
     }
 
+    public Product updateProduct(Long id, String name, String description, BigDecimal price)
+    {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        product.changeName(name);
+        product.changePrice(price);
+        product.changeDescription(description);
+        return productRepository.save(product);
+    }
+
     
 }
