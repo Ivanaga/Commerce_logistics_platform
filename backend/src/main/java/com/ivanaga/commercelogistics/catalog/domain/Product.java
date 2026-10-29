@@ -83,4 +83,12 @@ public class Product
     {
         this.price = price;
     }
+    public void deactivate()
+    {
+        this.status = ProductStatus.INACTIVE;
+    }
+    public void activate()
+    {
+        this.status = ProductStatus.ACTIVE;
+    }
 }

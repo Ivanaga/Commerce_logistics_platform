@@ -57,5 +57,21 @@ public class ProductController
         ProductResponse response = new ProductResponse(product.getId(), product.getSku(), product.getName(), product.getDescription(), product.getPrice(), product.getStatus());
         return response;
     }
+
+    @PatchMapping("/{id}/deactivate")
+    public ProductResponse deactivateProduct(@PathVariable Long id)
+    {
+        Product product = productService.deactivateProduct(id);
+        ProductResponse response = new ProductResponse(product.getId(), product.getSku(), product.getName(), product.getDescription(), product.getPrice(), product.getStatus());
+        return response;
+    }
+
+    @PatchMapping("/{id}/activate")
+    public ProductResponse activateProduct(@PathVariable Long id)
+    {
+        Product product = productService.activateProduct(id);
+        ProductResponse response = new ProductResponse(product.getId(), product.getSku(), product.getName(), product.getDescription(), product.getPrice(), product.getStatus());
+        return response;
+    }
     
 }

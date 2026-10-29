@@ -1,6 +1,5 @@
 package com.ivanaga.commercelogistics.catalog.api;
 
-import org.hibernate.sql.Update;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,4 +134,43 @@ public class ProductControllerTest
 
         verify(productService, never()).updateProduct(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString(), Mockito.any(BigDecimal.class));
     }
+
+    @Test
+    void deactivateProductSuccess() throws Exception
+    {
+        Product product = new Product("Iphone 11-256", "Iphone 11 Black 256 GB", "Loh", new BigDecimal("200.00"));
+
+        product.deactivate();
+
+        when(productService.deactivateProduct(1L)).thenReturn(product);
+
+        mockMvc.perform(patch("/api/products/1/deactivate")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("INACTIVE"));
+    }
+
+    @Test
+    void activateProductSuccess() throws Exception
+    {
+        Product product = new Product("Iphone 11-256", "Iphone 11 Black 256 GB", "Loh", new BigDecimal("200.00"));
+
+        when(productService.activateProduct(1L)).thenReturn(product);
+
+        mockMvc.perform(patch("/api/products/1/activate")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("ACTIVE"));
+    }
+
+    @Test
+    void deactivateProductNotFound() throws Exception
+    {
+        when(productService.deactivateProduct(999L)).thenThrow(new ProductNotFoundException(999L));
+
+        mockMvc.perform(patch("/api/products/999/deactivate")).andExpect(status().isNotFound()).andExpect(content().string("Product with id '999' not found!"));
+    }
+
+    @Test
+    void activateProductNotFound() throws Exception
+    {
+        when(productService.activateProduct(999L)).thenThrow(new ProductNotFoundException(999L));
+
+        mockMvc.perform(patch("/api/products/999/activate")).andExpect(status().isNotFound()).andExpect(content().string("Product with id '999' not found!"));
+    }
 }
+

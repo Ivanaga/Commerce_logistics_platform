@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import com.ivanaga.commercelogistics.catalog.application.exceptions.ProductAlreadyExistsException;
 import com.ivanaga.commercelogistics.catalog.application.exceptions.ProductNotFoundException;
 import com.ivanaga.commercelogistics.catalog.domain.Product;
+import com.ivanaga.commercelogistics.catalog.domain.ProductStatus;
 import com.ivanaga.commercelogistics.catalog.infrastructure.ProductRepository;
 
 public class ProductServiceTest 
@@ -113,6 +114,42 @@ public class ProductServiceTest
         assertThrows(ProductNotFoundException.class, () -> productService.updateProduct(999L, "s", "l", new BigDecimal("22")));
         verify(productRepository).findById(999L);
         verify(productRepository, never()).save(Mockito.any(Product.class));
+    }
+
+    @Test
+    void deactivateProductSuccess()
+    {
+        Product product = new Product("Iphone 11-256", "Iphone 11 Black 256 GB", "Loh", new BigDecimal("200.00"));
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+
+        when(productRepository.save(Mockito.any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Product result = productService.deactivateProduct(1L);
+
+        assertEquals(ProductStatus.INACTIVE, result.getStatus());
+
+        verify(productRepository).findById(1L);
+        verify(productRepository).save(product);
+    }
+
+    @Test
+    void activateProductSuccess()
+    {
+        Product product = new Product("Iphone 11-256", "Iphone 11 Black 256 GB", "Loh", new BigDecimal("200.00"));
+
+        product.deactivate();
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+
+        when(productRepository.save(Mockito.any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Product result = productService.activateProduct(1L);
+
+        assertEquals(ProductStatus.ACTIVE, result.getStatus());
+
+        verify(productRepository).findById(1L);
+        verify(productRepository).save(product);
     }
     
 }

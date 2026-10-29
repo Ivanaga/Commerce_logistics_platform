@@ -55,5 +55,20 @@ public class ProductService
         return productRepository.save(product);
     }
 
+    public Product deactivateProduct(Long id)
+    {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        product.deactivate();
+        return productRepository.save(product);
+    }
+
+    public Product activateProduct(Long id)
+    {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        product.activate();
+        return productRepository.save(product);
+    }
+
+
     
 }
