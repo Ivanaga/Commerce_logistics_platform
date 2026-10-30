@@ -1,15 +1,16 @@
+import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 
 export function AppLayout() 
 {
   return (
-    <div>
+    <Box sx={{ display: 'flex' }}>
       <Sidebar />
 
-      <main>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Outlet />
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }

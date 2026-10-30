@@ -1,7 +1,18 @@
-import { Drawer, List, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
+import { Drawer, List, ListItemButton, ListItemText, Toolbar, Typography} from '@mui/material';
+
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
+
+const menuItems = 
+[
+  { label: 'Products', path: '/products' },
+  { label: 'Inventory', path: '/inventory' },
+  { label: 'Orders', path: '/orders' },
+  { label: 'Warehouses', path: '/warehouses' },
+  { label: 'Payments', path: '/payments' },
+  { label: 'Shipments', path: '/shipments' },
+];
 
 export function Sidebar() 
 {
@@ -11,7 +22,8 @@ export function Sidebar()
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        '& .MuiDrawer-paper': {
+        '& .MuiDrawer-paper': 
+        {
           width: drawerWidth,
           boxSizing: 'border-box',
         },
@@ -24,9 +36,15 @@ export function Sidebar()
       </Toolbar>
 
       <List>
-        <ListItemButton component={Link} to="/products">
-          <ListItemText primary="Products" />
-        </ListItemButton>
+        {menuItems.map((item) => (
+          <ListItemButton
+            key={item.path}
+            component={Link}
+            to={item.path}
+          >
+            <ListItemText primary={item.label} />
+          </ListItemButton>
+        ))}
       </List>
     </Drawer>
   );
