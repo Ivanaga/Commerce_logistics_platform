@@ -63,7 +63,7 @@ export function ProductsPage()
           Products
         </Typography>
 
-        <Button variant="contained">
+        <Button variant="contained" component={Link} to="/products/new">
           Add product
         </Button>
       </Box>

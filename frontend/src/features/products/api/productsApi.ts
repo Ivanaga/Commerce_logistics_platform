@@ -1,3 +1,4 @@
+import type { CreateProductRequest } from '../types/CreateProductRequest';
 import type { Product } from '../types/Product';
 import type { UpdateProductRequest } from '../types/UpdateProductRequest';
 
@@ -68,4 +69,24 @@ export async function updateProductRequest(id: number, request: UpdateProductReq
 
   return response.json();
 
+}
+
+export async function createProductRequest(request: CreateProductRequest): Promise<Product>
+{
+  const response = await fetch('http://localhost:8080/api/products', 
+    {
+      method: 'POST', 
+      headers: 
+      {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    })
+    
+  if (!response.ok) 
+  {
+    throw new Error('Failed to create product');
+  }
+
+  return response.json();
 }
