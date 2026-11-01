@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Box, Button, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material';
 import { deactivateProduct, activateProduct, getProducts } from '../api/productsApi';
 import type { Product } from '../types/Product';
+import { Link } from 'react-router-dom';
 
 export function ProductsPage() 
 {
@@ -96,7 +97,7 @@ export function ProductsPage()
                 />
               </TableCell>
               <TableCell>
-                <Button size="small">
+                <Button size="small" component={Link} to={`/products/${product.id}/edit`}>
                   Edit
                 </Button>
 
