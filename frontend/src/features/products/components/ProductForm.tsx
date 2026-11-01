@@ -54,7 +54,7 @@ export function ProductForm(
         })} error={!!errors.price} helperText={errors.price?.message}/>
 
         <Button type="submit" variant="contained" disabled={isSubmitting}>
-          {submitLabel}
+          {isSubmitting ? 'Saving...' : submitLabel}
         </Button>
       </Stack>
     </form>
