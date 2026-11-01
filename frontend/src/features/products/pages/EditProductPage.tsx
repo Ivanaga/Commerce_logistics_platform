@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import { updateProductRequest } from '../api/productsApi';
 import type { UpdateProductRequest } from '../types/UpdateProductRequest';
 
+import { ProductForm } from '../components/ProductForm';
+
 export function EditProductPage() 
 {
   const { id } = useParams();
@@ -25,8 +27,6 @@ export function EditProductPage()
   // this fn gives us important funcs to handle fields + queries using TanStack register for connecting to wrappaer, reset to set values and handleSubmit for preparing data for PATCH request
   const 
   {
-    register,
-    handleSubmit,
     reset,
   } = useForm<UpdateProductRequest>();
 
@@ -92,17 +92,12 @@ export function EditProductPage()
   return (
     <div>
       <h1>Edit {product.name}</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register('name')} />
-
-        <input {...register('description')} />
-
-        <input type="number" step="0.01" {...register('price', { valueAsNumber: true })}/>
-
-        <button type="submit">
-            Save
-        </button>
-      </form>
+      <ProductForm defaultValues=
+      {{
+        name: product.name,
+        description: product.description,
+        price: product.price,
+      }} showSku={false} submitLabel="Save" onSubmit={onSubmit} isSubmitting={updateMutation.isPending}/>
     </div>
   );
 }
