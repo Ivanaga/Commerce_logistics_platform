@@ -1,13 +1,11 @@
 import { Button, Stack, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-export interface ProductFormValues 
-{
-  sku?: string;
-  name: string;
-  description: string | null;
-  price: number;
-}
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  productFormSchema,
+  type ProductFormValues
+} from '../schemas/productSchema';
 
 interface ProductFormProps 
 {
@@ -31,17 +29,15 @@ export function ProductForm(
   {
     register,
     handleSubmit,
-  } = useForm<ProductFormValues>(
-  {
-    defaultValues,
-  });
+    formState: { errors },
+  } = useForm<ProductFormValues>({defaultValues, resolver: zodResolver(productFormSchema),});
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2}>
-        {showSku && (<TextField label="SKU" {...register('sku')}/>)}
+        {showSku && (<TextField label="SKU" {...register('sku')} error={!!errors.sku} helperText={errors.sku?.message}/>)}
 
-        <TextField label="Name" {...register('name')}/>
+        <TextField label="Name" {...register('name')} error={!!errors.name} helperText={errors.name?.message}/>
 
         <TextField label="Description" {...register('description')}/>
 
@@ -55,7 +51,7 @@ export function ProductForm(
         {...register('price', 
         {
             valueAsNumber: true,
-        })}/>
+        })} error={!!errors.price} helperText={errors.price?.message}/>
 
         <Button type="submit" variant="contained" disabled={isSubmitting}>
           {submitLabel}
